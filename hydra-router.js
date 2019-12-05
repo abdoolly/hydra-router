@@ -8,7 +8,7 @@ if (process.env.NEW_RELIC_LICENSE_KEY) {
   require('newrelic');
 }
 
-const hydra = require('hydra');
+const hydra = require('hydra-promoted-core');
 const serviceRouter = require('./lib/servicerouter');
 
 /**

@@ -1,7 +1,7 @@
 'use strict';
 
 const WebSocket = require('ws');
-const hydra = require('hydra');
+const hydra = require('hydra-promoted-core');
 const signatureSharedSecret = 'd632dd6d-fb75-44cc-bdbf-ee1364f3716c';
 
 let ws = new WebSocket('http://localhost:5353');
