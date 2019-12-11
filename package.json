@@ -8,15 +8,16 @@
   },
   "private": true,
   "scripts": {
-    "start": "node hydra-router.js",
-    "gctrace": "node --nouse-idle-notification --expose-gc --trace-gc --log-gc hydra-router.js",
+    "start": "node --expose-gc hydra-router.js",
+    "start:dev": "nodemon --expose-gc hydra-router.js",
+    "gctrace": "nodemon --nouse-idle-notification --expose-gc --trace-gc --log-gc hydra-router.js",
     "debug": "node --inspect --debug-brk hydra-router.js",
     "profile": "node --prof hydra-router.js",
     "profile-process": "f=$(ls -t isolate*.log | head -n1); node --prof-process \"$f\" > prof-process.log",
     "test": "mocha specs --reporter spec"
   },
   "engines": {
-    "node": ">=12.13.0"
+    "node": ">=10.17.0"
   },
   "license": "MIT",
   "dependencies": {

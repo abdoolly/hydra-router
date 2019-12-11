@@ -17,7 +17,7 @@ const serviceRouter = require('./lib/servicerouter');
  * @return {undefined}
  */
 let setupExitHandlers = () => {
-  process.on('cleanup', async() => {
+  process.on('cleanup', async () => {
     await serviceRouter.shutdown();
     await hydra.shutdown();
     process.exit(-1);
@@ -58,7 +58,7 @@ let displayNetworkInterfaces = () => {
   console.log('Detected IPv4 IPs:');
   Object.keys(interfaces).
     forEach((itf) => {
-      interfaces[itf].forEach((interfaceRecord)=>{
+      interfaces[itf].forEach((interfaceRecord) => {
         if (interfaceRecord.family === 'IPv4') {
           console.log(`* ${itf}: ${interfaceRecord.address} ${interfaceRecord.netmask}`);
         }
@@ -73,7 +73,7 @@ let displayNetworkInterfaces = () => {
  * @param {object} config - config object
  * @return {undefined}
  */
-let setupRoutes = async(config) => {
+let setupRoutes = async (config) => {
   let routeList = [
     '[get]/',
     '[get]/index.css',
@@ -93,6 +93,16 @@ let setupRoutes = async(config) => {
   ];
   await hydra.registerRoutes(routeList);
   let routesObj = await hydra.getAllServiceRoutes();
+
+  let routes = config.externalRoutes;
+
+  // adding isExternal to the external routes to be able to identify them in the requests
+  for (let host of Object.keys(routes)) {
+    for (let [key, route] of Object.entries(routes[host])) {
+      routes[host][key] = { route, isExternal: true };
+    }
+  }
+
   routesObj = Object.assign(routesObj, config.externalRoutes);
   serviceRouter.init(config, routesObj);
 };
@@ -148,7 +158,7 @@ let setupServer = (config, serviceInfo) => {
  */
 let setupWebSocketServer = (server) => {
   const WebSocketServer = require('ws').Server;
-  let wss = new WebSocketServer({server: server});
+  let wss = new WebSocketServer({ server: server });
   wss.on('connection', (ws, req) => {
     serviceRouter.sendConnectMessage(ws, null, req);
 
@@ -194,7 +204,7 @@ let displayBanner = () => {
  * @description Load configuration file and initialize hydra app
  * @return {undefined}
  */
-let main = async() => {
+let main = async () => {
   try {
     let HydraLogger;
     let loggerType = '';

@@ -8,8 +8,10 @@ services:
     container_name: hydra-router
     ports:
       - 5353:5353
-    # networks: 
-    #   - hydra-network
+    networks: 
+      - hydra-network
+    volumes:
+      - ./:/usr/src/app
 
   # redis:
   #   image: redis
@@ -20,6 +22,7 @@ services:
     #   - hydra-network
 
 
-# networks:
-#   hydra-network:
-#       name: hydra-network
+networks:
+  hydra-network:
+    external:
+      name: hydra-network
